@@ -13,15 +13,6 @@ interface ConsultantPageProps {
 }
 
 async function getConsultant(id: string): Promise<ConsultantWithProfile | null> {
-  // Check if Supabase is configured before attempting to create client
-  const isConfigured = process.env.NEXT_PUBLIC_SUPABASE_URL && 
-                      process.env.NEXT_PUBLIC_SUPABASE_URL !== 'your_supabase_url_here'
-
-  if (!isConfigured) {
-    console.warn('Supabase is not configured. Cannot fetch consultant.')
-    return null
-  }
-
   try {
     const supabase = createServerSupabaseClient()
     

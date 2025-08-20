@@ -7,15 +7,6 @@ import { ConsultantWithProfile } from '@/lib/database.types'
 export const dynamic = 'force-dynamic'
 
 async function getVerifiedConsultants(): Promise<ConsultantWithProfile[]> {
-  // Check if Supabase is configured before attempting to create client
-  const isConfigured = process.env.NEXT_PUBLIC_SUPABASE_URL && 
-                      process.env.NEXT_PUBLIC_SUPABASE_URL !== 'your_supabase_url_here'
-
-  if (!isConfigured) {
-    console.warn('Supabase is not configured. Returning empty consultant list.')
-    return []
-  }
-
   try {
     const supabase = createServerSupabaseClient()
     

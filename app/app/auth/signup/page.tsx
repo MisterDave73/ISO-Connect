@@ -13,6 +13,7 @@ import { UserRole } from '@/lib/database.types'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Users, Building2, Shield } from 'lucide-react'
+import { createSupabaseClient } from '@/lib/supabase'
 
 export default function SignUpPage() {
   const [loading, setLoading] = useState(false)
@@ -28,11 +29,6 @@ export default function SignUpPage() {
   const { toast } = useToast()
   const router = useRouter()
   
-  // Only create calls when needed to prevent build-time errors
-  const isConfigured = typeof window !== 'undefined' && 
-                      process.env.NEXT_PUBLIC_SUPABASE_URL && 
-                      process.env.NEXT_PUBLIC_SUPABASE_URL !== 'your_supabase_url_here'
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -45,11 +41,13 @@ export default function SignUpPage() {
       return
     }
 
-    if (!isConfigured) {
+    try {
+      createSupabaseClient()
+    } catch (error) {
       toast({
-        title: "Error",
-        description: "Supabase is not configured. Please check your environment variables.",
-        variant: "destructive"
+        title: 'Error',
+        description: (error as Error).message,
+        variant: 'destructive'
       })
       return
     }

@@ -33,11 +33,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userRole, setUserRole] = useState<UserRole | null>(null)
   const [loading, setLoading] = useState(true)
   
-  // Check if Supabase is configured
-  const isConfigured = process.env.NEXT_PUBLIC_SUPABASE_URL && 
-                      process.env.NEXT_PUBLIC_SUPABASE_URL !== 'your_supabase_url_here'
-  
-  const supabase = isConfigured ? createSupabaseClient() : null
+  let supabase = null as ReturnType<typeof createSupabaseClient> | null
+  try {
+    supabase = createSupabaseClient()
+  } catch (error) {
+    console.warn((error as Error).message)
+  }
 
   const fetchUserRole = async (userId: string) => {
     if (!supabase) return null
