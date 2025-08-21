@@ -21,12 +21,12 @@ export default function LoginPage() {
   const { toast } = useToast()
   const router = useRouter()
   
-  // Only create Supabase client if configured
-  const isConfigured = typeof window !== 'undefined' && 
-                      process.env.NEXT_PUBLIC_SUPABASE_URL && 
-                      process.env.NEXT_PUBLIC_SUPABASE_URL !== 'your_supabase_url_here'
-  
-  const supabase = isConfigured ? createSupabaseClient() : null
+  let supabase = null as ReturnType<typeof createSupabaseClient> | null
+  try {
+    supabase = createSupabaseClient()
+  } catch (error) {
+    console.warn((error as Error).message)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
