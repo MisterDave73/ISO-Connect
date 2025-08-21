@@ -1,10 +1,16 @@
-import { useState } from 'react'
+"use client";
+
+import dynamic from 'next/dynamic'
 import { Card, CardContent, CardHeader, CardTitle } from './card'
 import { Badge } from './badge'
 import { Checkbox } from './checkbox'
 import { Button } from './button'
 import { Pencil, Trash2 } from 'lucide-react'
-import { motion } from 'framer-motion'
+
+const MotionDiv = dynamic(
+  () => import('framer-motion').then((mod) => mod.motion.div),
+  { ssr: false }
+)
 
 interface TaskCardProps {
   id: string
@@ -28,7 +34,7 @@ export function TaskCard({
   onEdit,
 }: TaskCardProps) {
   return (
-    <motion.div
+    <MotionDiv
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -61,6 +67,6 @@ export function TaskCard({
           </Badge>
         </CardContent>
       </Card>
-    </motion.div>
+    </MotionDiv>
   )
 }
